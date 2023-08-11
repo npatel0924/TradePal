@@ -1,27 +1,18 @@
 package com.example.tradepal
 
+import android.os.Build
 import android.os.Bundle
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.tradepal.ui.theme.TradePalTheme
-import com.google.gson.JsonObject
-import okhttp3.MediaType
+import com.google.gson.JsonParser
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
-import com.google.gson.Gson
-import com.google.gson.JsonParser
 
 
 class MainActivity : ComponentActivity() {
@@ -38,13 +29,15 @@ class MainActivity : ComponentActivity() {
     private lateinit var Verdict: TextView
 
     override fun onCreate(savedInstanceState: Bundle?){
+
         super.onCreate(savedInstanceState)
         setContentView (R.layout.activity_main)
+
+        EnterButton = findViewById(R.id.EnterButton)
 
         EnterButton.setOnClickListener {
 
             TikcerInput = findViewById(R.id.TickerInput)
-            EnterButton = findViewById(R.id.EnterButton)
             Price = findViewById(R.id.Price)
             PointChange = findViewById(R.id.PointChange)
             PCTChange = findViewById(R.id.PCTChange)
