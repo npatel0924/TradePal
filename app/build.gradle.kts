@@ -63,6 +63,7 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation ("com.google.code.gson:gson:2.8.7")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.json:json:20230227")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
