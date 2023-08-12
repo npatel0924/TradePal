@@ -46,67 +46,25 @@ class MainActivity : ComponentActivity() {
 
                     val InputText = TikcerInput.text.toString()
 
-                    val Data = data(InputText)
+                    val data = data(InputText)
 
-                    val responseYF = Data.dataYF
-                    val responseRS = Data.dataRS
+                    val DataRS = data.dataRS
+                    val DataYF = data.dataYF
 
-                    val parser = JsonParser()
-                    val jsonElement = parser.parse(responseYF)
+                    val jc = jsonClean()
 
+                    Price.text = jc.price(DataRS)
+                    PointChange.text = jc.point_change(DataRS)
+                    PCTChange.text = jc.pct_change(DataRS)
+                    Volume.text = jc.volume(DataRS)
 
-                    val fiftyTwoWeekHigh = jsonElement.asJsonObject.get("fiftyTwoWeekHigh").asDouble
-                    val fiftyTwoWeekLow = jsonElement.asJsonObject.get("fiftyTwoWeekLow").asDouble
-                    val pegRatio = jsonElement.asJsonObject.get("pegRatio").asDouble
-                    val targetMeanPrice = jsonElement.asJsonObject.get("targetMeanPrice").asDouble
+                    Range.text = jc.range(DataYF)
+                    PEG.text = jc.PEG(DataYF)
+                    MTP.text = jc.MTP(DataYF)
+                    Verdict.text = jc.verdict()
+                }
 
-                    val weekRange = fiftyTwoWeekLow.toString() + "-" + fiftyTwoWeekHigh.toString()
-
-                    val jsonElement2 = parser.parse(responseRS)
-
-                    val p = jsonElement2.asJsonObject.get("price").asDouble
-                    val pct = jsonElement2.asJsonObject.get("change_percentage").asDouble
-                    val pint = jsonElement2.asJsonObject.get("change_point").asDouble
-                    val vol = jsonElement2.asJsonObject.get("total_vol").asString
-
-                    Price.text = p.toString()
-                    PointChange.text = pint.toString()
-                    PCTChange.text = pct.toString()
-                    Volume.text = vol.toString()
-                    Range.text = weekRange
-                    MTP.text = targetMeanPrice.toString()
-                    PEG.text = pegRatio.toString()
-
-                    val pctAboveLow = ((p - fiftyTwoWeekLow) / fiftyTwoWeekLow) * 100
-                    val pctBelowTgt = ((targetMeanPrice - p) / targetMeanPrice) * 100
-
-                    when {
-                        pctAboveLow >= 33 && pegRatio <= 1 && pctBelowTgt <= 33 -> {
-                            Verdict.text = "BUY"
-                        }
-                        pctAboveLow >= 33 && pegRatio <= 1 -> {
-                            Verdict.text = "HOLD"
-                        }
-                        pctAboveLow >= 33 && pctBelowTgt <= 33 -> {
-                            Verdict.text = "HOLD"
-                        }
-                        !(pctAboveLow >= 33) && pegRatio <= 1 && pctBelowTgt <= 33 -> {
-                            Verdict.text = "HOLD"
-                        }
-                        !(pctAboveLow >= 33) && pegRatio <= 1 -> {
-                            Verdict.text = "WAIT"
-                        }
-                        !(pctAboveLow >= 33) && pctBelowTgt <= 33 -> {
-                            Verdict.text = "WAIT"
-                        }
-                        pctAboveLow >= 33 -> {
-                            Verdict.text = "WAIT"
-                        }
-                        else -> {
-                            Verdict.text = "SHORT"
-                        }
-                    }
-                } catch (e: Exception) {
+                catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
